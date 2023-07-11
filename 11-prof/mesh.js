@@ -33,7 +33,7 @@ export default class Mesh {
     const text = await resp.text();
 
     const txtList = text.split(/\s+/);
-    const data = txtList.map(d => +d);
+    const data = txtList
 
     const nv = data[0];
     const nt = data[1];
@@ -42,6 +42,7 @@ export default class Mesh {
     const indices = [];
 
     let index = 0;
+
     while (index < data.length) {
       const prefix = data[index];
       if (prefix === 'v') {
@@ -61,17 +62,22 @@ export default class Mesh {
         index++;
       }
     }
-    
-    for (let did = 2; did < data.length; did++) {
-      if (did < 4 * nv + 2) {
-        coords.push(data[did]);
-      }
-      else {
-        indices.push(data[did]);
-      }
-    }
 
-    console.log(coords, indices);
+    console.log('coords=');
+    console.log(coords);
+    console.log('indices=')
+    console.log(indices);
+    
+    // for (let did = 2; did < data.length; did++) {
+    //   if (did < 4 * nv + 2) {
+    //     coords.push(data[did]);
+    //   }
+    //   else {
+    //     indices.push(data[did]);
+    //   }
+    // }
+
+    // console.log(coords, indices);
     this.heds.build(coords, indices);
   }
 
