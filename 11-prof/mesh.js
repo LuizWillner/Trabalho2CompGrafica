@@ -32,7 +32,7 @@ export default class Mesh {
     const resp = await fetch('model.obj');
     const text = await resp.text();
 
-    const txtList = text.split(/\s+/)
+    const txtList = text.split(/\s+/);
     const data = txtList.map(d => +d);
 
     const nv = data[0];
@@ -41,6 +41,27 @@ export default class Mesh {
     const coords = [];
     const indices = [];
 
+    let index = 0;
+    while (index < data.length) {
+      const prefix = data[index];
+      if (prefix === 'v') {
+        let x = parseFloat(data[index + 1]);
+        let y = parseFloat(data[index + 2]);
+        let z = parseFloat(data[index + 3]);
+        coords.push(x, y, z);
+        index += 4;
+      } else if (prefix === 'f') {
+        let v1 = parseInt(data[index + 1]);
+        let v2 = parseInt(data[index + 2]);
+        let v3 = parseInt(data[index + 3]);
+        
+        indices.push(v1, v2, v3);
+        index += 4;
+      } else {
+        index++;
+      }
+    }
+    
     for (let did = 2; did < data.length; did++) {
       if (did < 4 * nv + 2) {
         coords.push(data[did]);
