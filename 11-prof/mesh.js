@@ -42,19 +42,23 @@ export default class Mesh {
     const indices = [];
 
     let index = 0;
+    console.log("aaa");
+    console.log(data);
     while (index < data.length) {
       const prefix = data[index];
       if (prefix === 'v') {
-        let x = parseFloat(data[index + 1]);
-        let y = parseFloat(data[index + 2]);
-        let z = parseFloat(data[index + 3]);
-        coords.push(x, y, z);
+        const x = parseFloat(data[index + 1]);
+        const y = parseFloat(data[index + 2]);
+        const z = parseFloat(data[index + 3]);
+        coords.push(x, y, z, 1.0);
         index += 4;
       } else if (prefix === 'f') {
-        let v1 = parseInt(data[index + 1]);
-        let v2 = parseInt(data[index + 2]);
-        let v3 = parseInt(data[index + 3]);
-        
+        const v1 = parseInt((data[index + 1].split(/\/\//)[0]));
+        const v2 = parseInt((data[index + 2].split(/\/\//)[0]));
+        const v3 = parseInt((data[index + 3].split(/\/\//)[0]));
+        //const v1 = parseInt(data[index + 1]-1);
+        //const v2 = parseInt(data[index + 2]-1);
+        //const v3 = parseInt(data[index + 3]-1);
         indices.push(v1, v2, v3);
         index += 4;
       } else {
@@ -62,14 +66,6 @@ export default class Mesh {
       }
     }
     
-    for (let did = 2; did < data.length; did++) {
-      if (did < 4 * nv + 2) {
-        coords.push(data[did]);
-      }
-      else {
-        indices.push(data[did]);
-      }
-    }
 
     console.log(coords, indices);
     this.heds.build(coords, indices);
