@@ -30,10 +30,7 @@ export default class Mesh {
 
   async loadMeshV4() {
     const resp = await fetch('model.obj');
-    const text = await resp.text();
-
-    const txtList = text.split(/\s+/);
-    const data = txtList
+    const data = await resp.text();
 
     const nv = data[0];
     const nt = data[1];
@@ -41,6 +38,8 @@ export default class Mesh {
     const coords = [];
     const indices = [];
 
+    // <<<<<< NOSSO JEITO >>>>>>>
+    const txtList = data.split(/\s+/);
     let index = 0;
 
     while (index < data.length) {
@@ -49,7 +48,7 @@ export default class Mesh {
         let x = parseFloat(data[index + 1]);
         let y = parseFloat(data[index + 2]);
         let z = parseFloat(data[index + 3]);
-        coords.push(x, y, z);
+        coords.push(x, y, z, 1.0);
         index += 4;
       } else if (prefix === 'f') {
         let v1 = parseInt(data[index + 1]);
@@ -63,21 +62,35 @@ export default class Mesh {
       }
     }
 
-    console.log('coords=');
-    console.log(coords);
-    console.log('indices=')
-    console.log(indices);
-    
-    // for (let did = 2; did < data.length; did++) {
-    //   if (did < 4 * nv + 2) {
-    //     coords.push(data[did]);
-    //   }
-    //   else {
-    //     indices.push(data[did]);
+    // <<<<<< OUTRO JEITO >>>>>>>
+    // const linhas_txt = data.split('\n');
+
+    // for (let index = 0; index < linhas_txt.length; index++) {
+    //   const linha = linhas_txt[index].trim();
+
+    //   if (linha.startsWith('v ')) {
+    //     const [_, x, y, z] = linha.split(/\s+/);
+    //     coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
+
+    //   } else if (linha.startsWith('f ')) {
+    //     const [_, i1, i2, i3] = linha.split(/\s+/);
+    //     indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
     //   }
     // }
 
-    // console.log(coords, indices);
+    
+    // for (let did = 2; did < data.length; did++) {
+      //   if (did < 4 * nv + 2) {
+        //     coords.push(data[did]);
+        //   }
+        //   else {
+          //     indices.push(data[did]);
+          //   }
+          // }
+          
+    console.log('coords=', coords);
+    console.log('indices=', indices);
+
     this.heds.build(coords, indices);
   }
 
