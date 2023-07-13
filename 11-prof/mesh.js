@@ -39,44 +39,44 @@ export default class Mesh {
     const indices = [];
 
     // <<<<<< NOSSO JEITO >>>>>>>
-    const txtList = data.split(/\s+/);
-    let index = 0;
+    // const txtList = data.split(/\s+/);
+    // let index = 0;
 
-    while (index < data.length) {
-      const prefix = data[index];
-      if (prefix === 'v') {
-        let x = parseFloat(data[index + 1]);
-        let y = parseFloat(data[index + 2]);
-        let z = parseFloat(data[index + 3]);
-        coords.push(x, y, z, 1.0);
-        index += 4;
-      } else if (prefix === 'f') {
-        let v1 = parseInt(data[index + 1]);
-        let v2 = parseInt(data[index + 2]);
-        let v3 = parseInt(data[index + 3]);
+    // while (index < data.length) {
+    //   const prefix = data[index];
+    //   if (prefix === 'v') {
+    //     let x = parseFloat(data[index + 1]);
+    //     let y = parseFloat(data[index + 2]);
+    //     let z = parseFloat(data[index + 3]);
+    //     coords.push(x, y, z, 1.0);
+    //     index += 4;
+    //   } else if (prefix === 'f') {
+    //     let v1 = parseInt(data[index + 1]);
+    //     let v2 = parseInt(data[index + 2]);
+    //     let v3 = parseInt(data[index + 3]);
         
-        indices.push(v1, v2, v3);
-        index += 4;
-      } else {
-        index++;
-      }
-    }
-
-    // <<<<<< OUTRO JEITO >>>>>>>
-    // const linhas_txt = data.split('\n');
-
-    // for (let index = 0; index < linhas_txt.length; index++) {
-    //   const linha = linhas_txt[index].trim();
-
-    //   if (linha.startsWith('v ')) {
-    //     const [_, x, y, z] = linha.split(/\s+/);
-    //     coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
-
-    //   } else if (linha.startsWith('f ')) {
-    //     const [_, i1, i2, i3] = linha.split(/\s+/);
-    //     indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
+    //     indices.push(v1, v2, v3);
+    //     index += 4;
+    //   } else {
+    //     index++;
     //   }
     // }
+
+    // <<<<<< OUTRO JEITO >>>>>>>
+    const linhas_txt = data.split('\n');
+
+    for (let index = 0; index < linhas_txt.length; index++) {
+      const linha = linhas_txt[index].trim();
+
+      if (linha.startsWith('v ')) {
+        const [_, x, y, z] = linha.split(/\s+/);
+        coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
+
+      } else if (linha.startsWith('f ')) {
+        const [_, i1, i2, i3] = linha.split(/\s+/);
+        indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
+      }
+    }
 
     
     // for (let did = 2; did < data.length; did++) {
