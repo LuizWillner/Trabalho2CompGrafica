@@ -5,13 +5,14 @@ import Shader from './shader.js';
 import { HalfEdgeDS } from './half-edge.js';
 
 export default class Mesh {
-  constructor(delta) {
+  constructor(delta,name) {
     // model data structure
     this.heds = new HalfEdgeDS();
 
     // Matriz de modelagem
     this.angle = 0;
     this.delta = delta;
+    this.name = name;
     this.model = mat4.create();
 
     // Shader program
@@ -29,7 +30,7 @@ export default class Mesh {
   }
 
   async loadMeshV4() {
-    const resp = await fetch('model.obj');
+    const resp = await fetch(this.name);
     const data = await resp.text();
 
     const nv = data[0];
@@ -39,34 +40,49 @@ export default class Mesh {
     const indices = [];
 
     // <<<<<< NOSSO JEITO >>>>>>>
-    const txtList = data.split(/\s+/);
-    let index = 0;
-    console.log("aaa");
-    console.log(data);
-    while (index < data.length) {
-      const prefix = data[index];
-      if (prefix === 'v') {
-        const x = parseFloat(data[index + 1]);
-        const y = parseFloat(data[index + 2]);
-        const z = parseFloat(data[index + 3]);
-        coords.push(x, y, z, 1.0);
-        index += 4;
-      } else if (prefix === 'f') {
-        const v1 = parseInt((data[index + 1].split(/\/\//)[0]));
-        const v2 = parseInt((data[index + 2].split(/\/\//)[0]));
-        const v3 = parseInt((data[index + 3].split(/\/\//)[0]));
-        //const v1 = parseInt(data[index + 1]-1);
-        //const v2 = parseInt(data[index + 2]-1);
-        //const v3 = parseInt(data[index + 3]-1);
-        indices.push(v1, v2, v3);
-        index += 4;
-      } else {
-        index++;
+    // const txtList = data.split(/\s+/);
+    // let index = 0;
+
+    // while (index < data.length) {
+    //   const prefix = data[index];
+    //   if (prefix === 'v') {
+    //     let x = parseFloat(data[index + 1]);
+    //     let y = parseFloat(data[index + 2]);
+    //     let z = parseFloat(data[index + 3]);
+    //     coords.push(x, y, z, 1.0);
+    //     index += 4;
+    //   } else if (prefix === 'f') {
+    //     let v1 = parseInt(data[index + 1]);
+    //     let v2 = parseInt(data[index + 2]);
+    //     let v3 = parseInt(data[index + 3]);
+        
+    //     indices.push(v1, v2, v3);
+    //     index += 4;
+    //   } else {
+    //     index++;
+    //   }
+    // }
+
+    // <<<<<< OUTRO JEITO >>>>>>>
+    const linhas_txt = data.split('\n');
+
+    for (let index = 0; index < linhas_txt.length; index++) {
+      const linha = linhas_txt[index].trim();
+
+      if (linha.startsWith('v ')) {
+        const [_, x, y, z] = linha.split(/\s+/);
+        coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
+
+      } else if (linha.startsWith('f ')) {
+        const [_, i1, i2, i3] = linha.split(/\s+/);
+        indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
       }
     }
-    
 
-    console.log(coords, indices);
+          
+    console.log('coords=', coords);
+    console.log('indices=', indices);
+
     this.heds.build(coords, indices);
   }
 
@@ -116,26 +132,35 @@ export default class Mesh {
   updateModelMatrix() {
     this.angle += 0.005;
 
-    mat4.identity( this.model );
-    mat4.translate(this.model, this.model, [this.delta, 0, 0]);
-    // [1 0 0 delta, 0 1 0 0, 0 0 1 0, 0 0 0 1] * this.mat 
+    if (this.name === 'model.obj'){
+      mat4.identity( this.model );
+    
+      mat4.translate(this.model, this.model, [this.delta, 0, 0]);
+  
+      mat4.rotateY(this.model, this.model, this.angle);
+  
+      mat4.translate(this.model, this.model, [0, 0, 0]);
+  
+      mat4.scale(this.model, this.model, [0.48, 0.48, 0.48]);
+    }
 
-    mat4.rotateY(this.model, this.model, this.angle);
-    // [ cos(this.angle) 0 -sin(this.angle) 0, 
-    //         0         1        0         0, 
-    //   sin(this.angle) 0  cos(this.angle) 0, 
-    //         0         0        0         1]
-    // * this.mat 
+    else {
+      mat4.identity( this.model );
+    
+      mat4.translate(this.model, this.model, [this.delta, 0, 0]);
+  
+      mat4.rotateZ(this.model, this.model, this.angle);
+  
+      mat4.translate(this.model, this.model, [-1, 0, -1]);
+  
+      mat4.scale(this.model, this.model, [0.16, 0.16, 0.16]);
+    }
 
-    mat4.translate(this.model, this.model, [-0.25, -0.25, -0.25]);
-    // [1 0 0 -0.5, 0 1 0 -0.5, 0 0 1 -0.5, 0 0 0 1] * this.mat 
-
-    mat4.scale(this.model, this.model, [5, 5, 5]);
-    // [5 0 0 0, 0 5 0 0, 0 0 5 0, 0 0 0 1] * this.mat 
+  
   }
 
   draw(gl, cam, light) {
-    // faces orientadas no sentido anti-horário
+    // faces orientadas no sentido anti-horÃ¡rio
     gl.frontFace(gl.CCW);
 
     // face culling
