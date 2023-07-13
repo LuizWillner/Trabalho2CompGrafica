@@ -113,7 +113,7 @@ export default class Mesh {
   updateModelMatrix() {
     this.angle += 0.005;
 
-    if (this.name === 'model.obj'){
+    if (this.name === 'armadillo.obj'){
       mat4.identity( this.model );
     
       mat4.translate(this.model, this.model, [this.delta, 0, 0]);
@@ -125,7 +125,7 @@ export default class Mesh {
       mat4.scale(this.model, this.model, [0.48, 0.48, 0.48]);
     }
 
-    else {
+    else if (this.name === 'bunny.obj') {
       mat4.identity( this.model );
     
       mat4.translate(this.model, this.model, [this.delta, 0, 0]);

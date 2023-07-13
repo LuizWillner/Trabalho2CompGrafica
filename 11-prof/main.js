@@ -11,8 +11,8 @@ class Scene {
     this.light = new Light();
 
     // Mesh
-    this.mesh = new Mesh( 1.0, 'model.obj');
-    this.mesh2 = new Mesh( 1.0, 'model2.obj');
+    this.mesh = new Mesh( 1.0, 'armadillo.obj');
+    this.mesh2 = new Mesh( 1.0, 'bunny.obj');
 
   }
 
