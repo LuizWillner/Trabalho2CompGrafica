@@ -24,11 +24,11 @@ class Scene {
   }
 
   draw(gl) {  
-    this.cam.updateCam();
-    this.light.updateLight();
+    //this.cam.updateCam();
+    //this.light.updateLight();
 
     this.mesh.draw(gl, this.cam, this.light);
-    this.copy.draw(gl, this.cam, this.light);
+    //this.copy.draw(gl, this.cam, this.light);
   }
 }
 
@@ -59,6 +59,7 @@ class Main {
 
     this.scene.draw(this.gl);
 
+    //Faz rotação
     requestAnimationFrame(this.draw.bind(this));
   }
 }

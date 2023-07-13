@@ -30,10 +30,7 @@ export default class Mesh {
 
   async loadMeshV4() {
     const resp = await fetch('model.obj');
-    const text = await resp.text();
-
-    const txtList = text.split(/\s+/);
-    const data = txtList.map(d => +d);
+    const data = await resp.text();
 
     const nv = data[0];
     const nt = data[1];
@@ -41,33 +38,59 @@ export default class Mesh {
     const coords = [];
     const indices = [];
 
-    let index = 0;
-    console.log("aaa");
-    console.log(data);
-    while (index < data.length) {
-      const prefix = data[index];
-      if (prefix === 'v') {
-        const x = parseFloat(data[index + 1]);
-        const y = parseFloat(data[index + 2]);
-        const z = parseFloat(data[index + 3]);
-        coords.push(x, y, z, 1.0);
-        index += 4;
-      } else if (prefix === 'f') {
-        const v1 = parseInt((data[index + 1].split(/\/\//)[0]));
-        const v2 = parseInt((data[index + 2].split(/\/\//)[0]));
-        const v3 = parseInt((data[index + 3].split(/\/\//)[0]));
-        //const v1 = parseInt(data[index + 1]-1);
-        //const v2 = parseInt(data[index + 2]-1);
-        //const v3 = parseInt(data[index + 3]-1);
-        indices.push(v1, v2, v3);
-        index += 4;
-      } else {
-        index++;
+    // <<<<<< NOSSO JEITO >>>>>>>
+    // const txtList = data.split(/\s+/);
+    // let index = 0;
+
+    // while (index < data.length) {
+    //   const prefix = data[index];
+    //   if (prefix === 'v') {
+    //     let x = parseFloat(data[index + 1]);
+    //     let y = parseFloat(data[index + 2]);
+    //     let z = parseFloat(data[index + 3]);
+    //     coords.push(x, y, z, 1.0);
+    //     index += 4;
+    //   } else if (prefix === 'f') {
+    //     let v1 = parseInt(data[index + 1]);
+    //     let v2 = parseInt(data[index + 2]);
+    //     let v3 = parseInt(data[index + 3]);
+        
+    //     indices.push(v1, v2, v3);
+    //     index += 4;
+    //   } else {
+    //     index++;
+    //   }
+    // }
+
+    // <<<<<< OUTRO JEITO >>>>>>>
+    const linhas_txt = data.split('\n');
+
+    for (let index = 0; index < linhas_txt.length; index++) {
+      const linha = linhas_txt[index].trim();
+
+      if (linha.startsWith('v ')) {
+        const [_, x, y, z] = linha.split(/\s+/);
+        coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
+
+      } else if (linha.startsWith('f ')) {
+        const [_, i1, i2, i3] = linha.split(/\s+/);
+        indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
       }
     }
-    
 
-    console.log(coords, indices);
+    
+    // for (let did = 2; did < data.length; did++) {
+      //   if (did < 4 * nv + 2) {
+        //     coords.push(data[did]);
+        //   }
+        //   else {
+          //     indices.push(data[did]);
+          //   }
+          // }
+          
+    console.log('coords=', coords);
+    console.log('indices=', indices);
+
     this.heds.build(coords, indices);
   }
 
@@ -131,12 +154,12 @@ export default class Mesh {
     mat4.translate(this.model, this.model, [-0.25, -0.25, -0.25]);
     // [1 0 0 -0.5, 0 1 0 -0.5, 0 0 1 -0.5, 0 0 0 1] * this.mat 
 
-    mat4.scale(this.model, this.model, [5, 5, 5]);
+    mat4.scale(this.model, this.model, [0.5, 0.5, 0.5]);
     // [5 0 0 0, 0 5 0 0, 0 0 5 0, 0 0 0 1] * this.mat 
   }
 
   draw(gl, cam, light) {
-    // faces orientadas no sentido anti-horário
+    // faces orientadas no sentido anti-horÃ¡rio
     gl.frontFace(gl.CCW);
 
     // face culling
