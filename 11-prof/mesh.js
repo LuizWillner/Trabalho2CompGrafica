@@ -43,15 +43,16 @@ export default class Mesh {
 
     for (let index = 0; index < linhas_txt.length; index++) {
       const linha = linhas_txt[index].trim();
+      const prefix = linha[0]
 
-      if (linha[0] === 'f') {
+      if (prefix === 'f') {
         const linha_split = linha.split(/\s+/);
         const f1 = linha_split[1]
         const f2 = linha_split[2]
         const f3 = linha_split[3]
         indices.push(parseInt(f1) - 1, parseInt(f2) - 1, parseInt(f3) - 1);
 
-      } else if (linha[0] === 'v') {
+      } else if (prefix === 'v') {
         const linha_split = linha.split(/\s+/);
         const x = linha_split[1]
         const y = linha_split[2]
