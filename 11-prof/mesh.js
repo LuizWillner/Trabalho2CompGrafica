@@ -5,13 +5,14 @@ import Shader from './shader.js';
 import { HalfEdgeDS } from './half-edge.js';
 
 export default class Mesh {
-  constructor(delta) {
+  constructor(delta,name) {
     // model data structure
     this.heds = new HalfEdgeDS();
 
     // Matriz de modelagem
     this.angle = 0;
     this.delta = delta;
+    this.name = name;
     this.model = mat4.create();
 
     // Shader program
@@ -29,7 +30,7 @@ export default class Mesh {
   }
 
   async loadMeshV4() {
-    const resp = await fetch('model.obj');
+    const resp = await fetch(this.name);
     const data = await resp.text();
 
     const nv = data[0];
@@ -78,15 +79,6 @@ export default class Mesh {
       }
     }
 
-    
-    // for (let did = 2; did < data.length; did++) {
-      //   if (did < 4 * nv + 2) {
-        //     coords.push(data[did]);
-        //   }
-        //   else {
-          //     indices.push(data[did]);
-          //   }
-          // }
           
     console.log('coords=', coords);
     console.log('indices=', indices);
@@ -140,22 +132,31 @@ export default class Mesh {
   updateModelMatrix() {
     this.angle += 0.005;
 
-    mat4.identity( this.model );
-    mat4.translate(this.model, this.model, [this.delta, 0, 0]);
-    // [1 0 0 delta, 0 1 0 0, 0 0 1 0, 0 0 0 1] * this.mat 
+    if (this.name === 'model.obj'){
+      mat4.identity( this.model );
+    
+      mat4.translate(this.model, this.model, [this.delta, 0, 0]);
+  
+      mat4.rotateY(this.model, this.model, this.angle);
+  
+      mat4.translate(this.model, this.model, [-0.25, -0.25, -0.25]);
+  
+      mat4.scale(this.model, this.model, [0.5, 0.5, 0.5]);
+    }
 
-    mat4.rotateY(this.model, this.model, this.angle);
-    // [ cos(this.angle) 0 -sin(this.angle) 0, 
-    //         0         1        0         0, 
-    //   sin(this.angle) 0  cos(this.angle) 0, 
-    //         0         0        0         1]
-    // * this.mat 
+    else {
+      mat4.identity( this.model );
+    
+      mat4.translate(this.model, this.model, [this.delta, 0, 0]);
+  
+      mat4.rotateZ(this.model, this.model, this.angle);
+  
+      mat4.translate(this.model, this.model, [-1, -1, -1]);
+  
+      mat4.scale(this.model, this.model, [0.16, 0.16, 0.16]);
+    }
 
-    mat4.translate(this.model, this.model, [-0.25, -0.25, -0.25]);
-    // [1 0 0 -0.5, 0 1 0 -0.5, 0 0 1 -0.5, 0 0 0 1] * this.mat 
-
-    mat4.scale(this.model, this.model, [0.5, 0.5, 0.5]);
-    // [5 0 0 0, 0 5 0 0, 0 0 5 0, 0 0 0 1] * this.mat 
+  
   }
 
   draw(gl, cam, light) {
