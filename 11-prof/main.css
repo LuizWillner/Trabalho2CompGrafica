@@ -85,13 +85,17 @@ tr{
     display: flex;
     flex-direction: column;
 }
-#coelho_index{
+#coelho_id{
     margin-left: 10px;
     border-radius: 10px;
     padding: 5%;
 }
-#tatu_index{
+#tatu_id{
     margin-left: 10px;
     border-radius: 10px;
     padding: 5%;
+}
+input{
+    display: flexbox;
+    flex-direction: row;
 }

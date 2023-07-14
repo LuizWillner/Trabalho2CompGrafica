@@ -169,7 +169,7 @@ export class HalfEdgeDS {
 
   estrela(vid, gl, mesh) {
     console.log('pinta', vid);
-    const colorRed = [5.0, 0.0, 0.0, 1.0];  // vermelho
+    const colorRed = [255.0, 0.0, 0.0, 1.0];  // vermelho
     
     const first = this.vertices[vid].he;
     first.vertex.color = colorRed;
