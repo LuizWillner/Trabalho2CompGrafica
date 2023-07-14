@@ -5,7 +5,7 @@ export default class Camera {
     this.at  = vec3.fromValues(0.0, 0.0, 0.0);
     this.up  = vec3.fromValues(0.0, 1.0, 0.0);
 
-    this.angle = 0;
+    this.anguloCam = 0;
 
     // Parâmetros da projeção
     this.fovy = Math.PI / 2;
@@ -46,8 +46,8 @@ export default class Camera {
   }
 
   updateCamPosition() {
-    this.angle += 0.0125;
-    mat4.rotateY(this.view, this.view, this.angle);
+    this.anguloCam += 0.0125;
+    mat4.rotateY(this.view, this.view, this.anguloCam);
   }
 
   updateCam() {
