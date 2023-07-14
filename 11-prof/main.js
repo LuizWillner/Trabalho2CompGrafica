@@ -67,7 +67,6 @@ class Main {
   }
 
   updateColorVertex() {
-    console.log(this.scene);
     const armadilloIndex = document.getElementById("tatu_index").value;
     const bunnyIndex = document.getElementById("coelho_index").value;
 

@@ -36,7 +36,6 @@ export class HalfEdgeDS {
   }
 
   build(coords, trigs) {
-    console.log('trigs=', trigs);
     // construção dos vértices
     for (let vid = 0; vid < coords.length; vid+=4) {
       const x = coords[vid];
@@ -45,10 +44,8 @@ export class HalfEdgeDS {
       const v = new Vertex(vid / 4, x, y, z);
       this.vertices.push(v);
     }
-    console.log('this.vertices = ', this.vertices);
 
     // construção das faces & half-edges
-    console.log('trigs[0] = ', trigs[0 + 0]);
     for (let tid = 0; tid < trigs.length; tid+=3) {
       const v0  = this.vertices[ trigs[tid + 0] ];
       const v1  = this.vertices[ trigs[tid + 1] ];
@@ -74,14 +71,11 @@ export class HalfEdgeDS {
       this.halfEdges.push(he0, he1, he2);
     }
 
-    console.log('this.halfEdges = ', this.halfEdges);
-
     this.computeOpposites();
     this.computeVertexHe();
 
     this.computeNormals();
 
-    console.log('halfEdgedDS = ', this);
   }
 
   computeOpposites() {
@@ -168,7 +162,6 @@ export class HalfEdgeDS {
   }
 
   estrela(vid, gl, mesh) {
-    console.log('pinta', vid);
     const colorRed = [255.0, 0.0, 0.0, 1.0];  // vermelho
     
     const first = this.vertices[vid].he;
