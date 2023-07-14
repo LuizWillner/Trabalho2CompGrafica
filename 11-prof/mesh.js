@@ -132,7 +132,7 @@ export default class Mesh {
   
       mat4.rotateZ(this.model, this.model, this.angle);
   
-      mat4.translate(this.model, this.model, [-1, 0, -1]);
+      mat4.translate(this.model, this.model, [-0.75, 0.25, -0.75]);
   
       mat4.scale(this.model, this.model, [0.16, 0.16, 0.16]);
     }
