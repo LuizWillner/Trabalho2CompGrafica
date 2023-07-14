@@ -39,47 +39,28 @@ export default class Mesh {
     const coords = [];
     const indices = [];
 
-    // <<<<<< NOSSO JEITO >>>>>>>
-    // const txtList = data.split(/\s+/);
-    // let index = 0;
-
-    // while (index < data.length) {
-    //   const prefix = data[index];
-    //   if (prefix === 'v') {
-    //     let x = parseFloat(data[index + 1]);
-    //     let y = parseFloat(data[index + 2]);
-    //     let z = parseFloat(data[index + 3]);
-    //     coords.push(x, y, z, 1.0);
-    //     index += 4;
-    //   } else if (prefix === 'f') {
-    //     let v1 = parseInt(data[index + 1]);
-    //     let v2 = parseInt(data[index + 2]);
-    //     let v3 = parseInt(data[index + 3]);
-        
-    //     indices.push(v1, v2, v3);
-    //     index += 4;
-    //   } else {
-    //     index++;
-    //   }
-    // }
-
-    // <<<<<< OUTRO JEITO >>>>>>>
     const linhas_txt = data.split('\n');
 
     for (let index = 0; index < linhas_txt.length; index++) {
       const linha = linhas_txt[index].trim();
+      const prefix = linha[0]
 
-      if (linha.startsWith('v ')) {
-        const [_, x, y, z] = linha.split(/\s+/);
+      if (prefix === 'f') {
+        const linha_split = linha.split(/\s+/);
+        const f1 = linha_split[1]
+        const f2 = linha_split[2]
+        const f3 = linha_split[3]
+        indices.push(parseInt(f1) - 1, parseInt(f2) - 1, parseInt(f3) - 1);
+
+      } else if (prefix === 'v') {
+        const linha_split = linha.split(/\s+/);
+        const x = linha_split[1]
+        const y = linha_split[2]
+        const z = linha_split[3]
         coords.push(parseFloat(x), parseFloat(y), parseFloat(z), 1.0); 
-
-      } else if (linha.startsWith('f ')) {
-        const [_, i1, i2, i3] = linha.split(/\s+/);
-        indices.push(parseInt(i1) - 1, parseInt(i2) - 1, parseInt(i3) - 1);
       }
     }
-
-          
+   
     console.log('coords=', coords);
     console.log('indices=', indices);
 
@@ -130,28 +111,28 @@ export default class Mesh {
   }
 
   updateModelMatrix() {
-    this.angle += 0.005;
+    this.angle += 0.05;
 
-    if (this.name === 'model.obj'){
+    if (this.name === 'armadillo.obj'){
       mat4.identity( this.model );
     
       mat4.translate(this.model, this.model, [this.delta, 0, 0]);
   
       mat4.rotateY(this.model, this.model, this.angle);
   
-      mat4.translate(this.model, this.model, [-0.25, -0.25, -0.25]);
+      mat4.translate(this.model, this.model, [0, 0, 0]);
   
-      mat4.scale(this.model, this.model, [0.5, 0.5, 0.5]);
+      mat4.scale(this.model, this.model, [0.48, 0.48, 0.48]);
     }
 
-    else {
+    else if (this.name === 'bunny.obj') {
       mat4.identity( this.model );
     
       mat4.translate(this.model, this.model, [this.delta, 0, 0]);
-  
+      
       mat4.rotateZ(this.model, this.model, this.angle);
   
-      mat4.translate(this.model, this.model, [-1, -1, -1]);
+      mat4.translate(this.model, this.model, [0.5, -1, -0.5]);
   
       mat4.scale(this.model, this.model, [0.16, 0.16, 0.16]);
     }
