@@ -40,8 +40,7 @@ h1.title {
 }
 
 table{
-    display: flex;
-    flex-direction: column;
+    display: in line;
     padding: 10px 10px;
 }
 
@@ -75,4 +74,24 @@ section{
 	color: rgb(15, 14, 15);
 	border-radius: 20px;
 	text-shadow: none;
+}
+
+td{
+    color: rgb(212, 226, 85);
+    font-family: 'RobotoMono-Regular';
+    
+}
+tr{
+    display: flex;
+    flex-direction: column;
+}
+#coelho_id{
+    margin-left: 10px;
+    border-radius: 10px;
+    padding: 5%;
+}
+#tatu_id{
+    margin-left: 10px;
+    border-radius: 10px;
+    padding: 5%;
 }
