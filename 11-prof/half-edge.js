@@ -167,7 +167,21 @@ export class HalfEdgeDS {
     return [coords, colors, normals, indices];
   }
 
-  estrela(v) {
+  estrela(vid, gl, mesh) {
+    console.log('pinta', vid);
+    const colorRed = [5.0, 0.0, 0.0, 1.0];  // vermelho
+    
+    const first = this.vertices[vid].he;
+    first.vertex.color = colorRed;
+  
+    let he = first.opposite;
+    for(let i = 0; he != first.opposite || i == 0; i++){
+      he.vertex.color = colorRed;
+      he = he.next;
+      he = he.opposite;
+    }
 
+    mesh.createVAO(gl);
   }
+
 }

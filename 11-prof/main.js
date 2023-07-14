@@ -11,26 +11,24 @@ class Scene {
     this.light = new Light();
 
     // Mesh
-    this.mesh = new Mesh(0, 'armadillo.obj');
-    this.mesh2 = new Mesh(0, 'bunny.obj');
+    this.mesh_armadillo = new Mesh(0, "armadillo.obj");
+    this.mesh_bunny = new Mesh(0, "bunny.obj");
 
   }
 
   async init(gl) {
-    await this.mesh.loadMeshV4();
-    this.mesh.init(gl, this.light);
+    await this.mesh_armadillo.loadMeshV4();
+    this.mesh_armadillo.init(gl, this.light);
 
-    await this.mesh2.loadMeshV4();
-    this.mesh2.init(gl, this.light);
-
+    await this.mesh_bunny.loadMeshV4();
+    this.mesh_bunny.init(gl, this.light);
   }
 
   draw(gl) {  
     this.cam.updateCam();
-    //this.light.updateLight();
-
-    this.mesh.draw(gl, this.cam, this.light);
-    this.mesh2.draw(gl, this.cam, this.light);
+    this.light.updateLight();
+    this.mesh_armadillo.draw(gl, this.cam, this.light);
+    this.mesh_bunny.draw(gl, this.cam, this.light);
 
   }
 }
@@ -46,6 +44,8 @@ class Main {
     this.scene.init(this.gl).then(() => {
       this.draw();
     });
+    this.updateColorVertex = this.updateColorVertex.bind(this);
+    document.getElementById("submit").addEventListener("click", this.updateColorVertex);
   }
 
   setViewport() {
@@ -62,8 +62,17 @@ class Main {
 
     this.scene.draw(this.gl);
 
-    //Faz rotação
+    //Faz rotaçãoS
     requestAnimationFrame(this.draw.bind(this));
+  }
+
+  updateColorVertex() {
+    console.log(this.scene);
+    const armadilloIndex = document.getElementById("tatu_index").value;
+    const bunnyIndex = document.getElementById("coelho_index").value;
+
+    this.scene.mesh_armadillo.heds.estrela(armadilloIndex, this.gl, this.scene.mesh_armadillo);
+    this.scene.mesh_bunny.heds.estrela(bunnyIndex, this.gl, this.scene.mesh_bunny);
   }
 }
 
