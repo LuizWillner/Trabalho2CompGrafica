@@ -11,24 +11,27 @@ class Scene {
     this.light = new Light();
 
     // Mesh
-    this.mesh = new Mesh( 1.0);
-    this.copy = new Mesh(-1.0);
+    this.mesh = new Mesh(0, 'armadillo.obj');
+    this.mesh2 = new Mesh(0, 'bunny.obj');
+
   }
 
   async init(gl) {
     await this.mesh.loadMeshV4();
     this.mesh.init(gl, this.light);
 
-    await this.copy.loadMeshV4()
-    this.copy.init(gl, this.light);
+    await this.mesh2.loadMeshV4();
+    this.mesh2.init(gl, this.light);
+
   }
 
   draw(gl) {  
-    //this.cam.updateCam();
+    this.cam.updateCam();
     //this.light.updateLight();
 
     this.mesh.draw(gl, this.cam, this.light);
-    //this.copy.draw(gl, this.cam, this.light);
+    this.mesh2.draw(gl, this.cam, this.light);
+
   }
 }
 
@@ -68,5 +71,3 @@ window.onload = () => {
   const app = new Main();
   app.draw();
 }
-
-
