@@ -1,13 +1,42 @@
+@font-face {
+    src: url(fonts/RobotoMono-Regular.ttf);
+    font-family: 'RobotoMono-Regular';    
+    font-weight: normal;
+} 
+@font-face {
+    src: url(fonts/RobotoMono-ExtraLight.ttf);
+    font-family: 'RobotoMono-ExtraLight';    
+    font-weight: normal;
+} 
+
 body { 
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(15, 14, 15);
 }
 
+h3.sub-title{
+    margin-top: 100px;
+    color: rgb(212, 226, 85);
+    font-family: 'RobotoMono-Regular';
+}
+h3.text{
+    color: rgb(134, 129, 135);
+    font-family: 'RobotoMono-ExtraLight';
+}
+h1.title {
+    color: rgb(212, 226, 85);
+    font-family: 'RobotoMono-Regular';
+    font-size: 50px;
+}
 #glcanvas {
+    margin-top: 75px;
+    margin-right: 5%;
     left: 10px;
-    top: 10px;
+    top: 50px;
     width: 1024;
     height: 768;
     background-color: black;
+    border: 5px solid rgb(24, 23, 24);
+    border-radius: 20px;
 }
 
 table{
@@ -16,8 +45,34 @@ table{
     padding: 10px 10px;
 }
 
-form{
+div{
     display: flex;
     flex-direction: row;
 
+}
+section{
+    padding-left: 5%;
+    padding-right: 5%;
+}
+#submit{
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    font-family: 'RobotoMono-Regular';
+    margin-top: 5%;
+    font-size: 20px;
+	background: rgb(212, 226, 85);
+	color: rgb(15, 14, 15);
+	border-radius: 20px;
+	text-shadow: none;
+}
+
+#submit:hover{
+    font-size: 20px;
+    font-family: 'RobotoMono-Regular';
+	background: rgb(255, 255, 255);
+	color: rgb(15, 14, 15);
+	border-radius: 20px;
+	text-shadow: none;
 }

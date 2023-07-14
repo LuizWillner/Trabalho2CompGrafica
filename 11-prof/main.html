@@ -8,21 +8,29 @@
 </head>
 
 <body>
-    <canvas id="glcanvas"></canvas>
-    <h3>Escolha vértices</h3>
-    <form name="esolher-vertice">
-        <table>
-            <tr>
-                <td>Coelho</td>
-                <td><input id="coelho_id" type="number" min="1" step="1" value="10" required></td>
-            </tr>
-            <tr>
-                <td>Tatu</td>
-                <td><input id="tatu_id" type="number" min="1" step="1" value="10" required></td>
-            </tr>
-        </table>
-        <input id="submit" type="button" value="Atualizar" onclick="updateColorVertex()">
-    </form>
+    <div>
+        <section>
+            <h3 class="sub-title">Trabalho.02.CG</h3>
+            <h1 class="title">Escolha os vértices</h1>
+            <h3 class="text"> Selecione um vértice de cada modelo através do campo de texto
+                abaixo. Os triângulos da estrela dos vértices selecionados serão mostrados em
+                vermelho.</h3>
+            <form name="esolher-vertice">
+                <table>
+                    <tr>
+                        <td>Coelho</td>
+                        <td><input id="coelho_id" type="number" min="1" step="1" value="10" required></td>
+                    </tr>
+                    <tr>
+                        <td>Tatu</td>
+                        <td><input id="tatu_id" type="number" min="1" step="1" value="10" required></td>
+                    </tr>
+                </table>
+                <input id="submit" type="button" value="ATUALIZAR" onclick="updateColorVertex()">
+            </form>
+        </section>
+        <canvas id="glcanvas"></canvas>
+    </div>
 </body>
 
 <script src="shader.js" type="module"></script>
