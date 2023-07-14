@@ -9,6 +9,20 @@
 
 <body>
     <canvas id="glcanvas"></canvas>
+    <h3>Escolha vértices</h3>
+    <form name="esolher-vertice">
+        <table>
+            <tr>
+                <td>Coelho</td>
+                <td><input id="coelho_id" type="number" min="1" step="1" value="10" required></td>
+            </tr>
+            <tr>
+                <td>Tatu</td>
+                <td><input id="tatu_id" type="number" min="1" step="1" value="10" required></td>
+            </tr>
+        </table>
+        <input id="submit" type="button" value="Atualizar" onclick="updateColorVertex()">
+    </form>
 </body>
 
 <script src="shader.js" type="module"></script>

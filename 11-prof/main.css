@@ -3,10 +3,21 @@ body {
 }
 
 #glcanvas {
-    position: absolute;
     left: 10px;
     top: 10px;
     width: 1024;
     height: 768;
     background-color: black;
+}
+
+table{
+    display: flex;
+    flex-direction: column;
+    padding: 10px 10px;
+}
+
+form{
+    display: flex;
+    flex-direction: row;
+
 }
