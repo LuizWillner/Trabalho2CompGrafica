@@ -5,6 +5,8 @@ export default class Camera {
     this.at  = vec3.fromValues(0.0, 0.0, 0.0);
     this.up  = vec3.fromValues(0.0, 1.0, 0.0);
 
+    this.anguloCam = 0;
+
     // Parâmetros da projeção
     this.fovy = Math.PI / 2;
     this.aspect = gl.canvas.width / gl.canvas.height;
@@ -38,16 +40,19 @@ export default class Camera {
 
   updateProjectionMatrix(type = '') {
     mat4.identity( this.proj );
+    mat4.perspective(this.proj, this.fovy, this.aspect, this.near, this.far);
+    // mat4.ortho(this.proj, this.left, this.right, this.bottom , this.top, this.near, this.far);
 
-    if (type === 'ortho') {
-      mat4.ortho(this.proj, this.left * 1024/768, this.right * 1024/768, this.bottom , this.top, this.near, this.far);
-    } else {
-      mat4.perspective(this.proj, this.fovy, this.aspect, this.near, this.far);
-    }
+  }
+
+  updateCamPosition() {
+    this.anguloCam += 0.0125;
+    mat4.rotateY(this.view, this.view, this.anguloCam);
   }
 
   updateCam() {
     this.updateViewMatrix();
     this.updateProjectionMatrix();
+    this.updateCamPosition();
   }
 }
