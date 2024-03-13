@@ -1,4 +1,4 @@
-# trabalho-2-cg
+# Trabalho2CompGrafica
 Trabalho de Computação Gráfica - UFF - 2023.1
 
 ## Instruções:
